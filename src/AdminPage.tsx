@@ -1,5 +1,7 @@
-import * as React from "react";
-import { NavLink, Route, RouteComponentProps } from "react-router-dom";
+/** @format */
+
+import * as React from 'react';
+import {NavLink, Route, RouteComponentProps} from 'react-router-dom';
 
 const AdminProducts: React.SFC = () => {
   return <div>Some options to administer products</div>;
@@ -12,9 +14,9 @@ interface IUser {
 }
 
 const adminUsersData: IUser[] = [
-  { id: 1, name: "Fred", isAdmin: true },
-  { id: 2, name: "Bob", isAdmin: false },
-  { id: 3, name: "Jane", isAdmin: true }
+  {id: 1, name: 'Fred', isAdmin: true},
+  {id: 2, name: 'Bob', isAdmin: false},
+  {id: 3, name: 'Jane', isAdmin: true},
 ];
 const AdminUsers: React.SFC = () => {
   return (
@@ -22,10 +24,7 @@ const AdminUsers: React.SFC = () => {
       <ul className="admin-sections">
         {adminUsersData.map(user => (
           <li key="user">
-            <NavLink
-              to={`/admin/users/${user.id}`}
-              activeClassName="admin-link-active"
-            >
+            <NavLink to={`/admin/users/${user.id}`} activeClassName="admin-link-active">
               {user.name}
             </NavLink>
           </li>
@@ -34,7 +33,7 @@ const AdminUsers: React.SFC = () => {
     </div>
   );
 };
-const AdminUser: React.SFC<RouteComponentProps<{ id: string }>> = props => {
+const AdminUser: React.SFC<RouteComponentProps<{id: string}>> = props => {
   let user: IUser;
   if (props.match.params.id) {
     const id: number = parseInt(props.match.params.id, 10);
@@ -62,12 +61,12 @@ const AdminPage: React.SFC = () => {
       <h1>Admin Panel</h1>
       <ul className="admin-sections">
         <li key="users">
-          <NavLink to={`/admin/users`} activeClassName="admin-link-active">
+          <NavLink to={'/admin/users'} activeClassName="admin-link-active">
             Users
           </NavLink>
         </li>
         <li key="products">
-          <NavLink to={`/admin/products`} activeClassName="admin-link-active">
+          <NavLink to={'/admin/products'} activeClassName="admin-link-active">
             Products
           </NavLink>
         </li>

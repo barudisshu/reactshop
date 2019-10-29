@@ -1,8 +1,9 @@
-import { BasketActionTypes, IBasketAdd } from "./BasketTypes";
-import { IProduct } from "./ProductsData";
+/** @format */
+
+import {BasketActionTypes, IBasketAdd} from './BasketTypes';
+import {IProduct} from './ProductsData';
 
 export const addToBasket = (product: IProduct): IBasketAdd => ({
-    product,
-    type: BasketActionTypes.ADD
+  product,
+  type: BasketActionTypes.ADD,
 });
-

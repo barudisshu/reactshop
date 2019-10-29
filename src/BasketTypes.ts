@@ -1,16 +1,18 @@
-import { IProduct } from "./ProductsData";
+/** @format */
+
+import {IProduct} from './ProductsData';
 
 export enum BasketActionTypes {
-    ADD = "BASKET/ADD"
+  ADD = 'BASKET/ADD',
 }
 
 export interface IBasketState {
-    readonly products: IProduct[];
+  readonly products: IProduct[];
 }
 
 export interface IBasketAdd {
-    type: BasketActionTypes.ADD;
-    product: IProduct;
+  type: BasketActionTypes.ADD;
+  product: IProduct;
 }
 
 export type BasketActions = IBasketAdd;

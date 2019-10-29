@@ -1,11 +1,13 @@
-import * as React from "react";
+/** @format */
+
+import * as React from 'react';
 
 interface IProps {
-    count: number;
+  count: number;
 }
 
 const BasketSummary: React.SFC<IProps> = props => {
-    return <div className="basket-summary">{props.count}</div>;
+  return <div className="basket-summary">{props.count}</div>;
 };
 
 export default BasketSummary;

@@ -1,11 +1,13 @@
-import * as React from "react";
-import { IProduct } from "./ProductsData";
-import { RouteComponentProps } from "react-router-dom";
-import "url-search-params-polyfill";
-import { connect } from "react-redux";
-import { IApplicationState } from "./Store";
-import { getProducts } from "./ProductsActions";
-import ProductsList from "./ProductsList";
+/** @format */
+
+import * as React from 'react';
+import {IProduct} from './ProductsData';
+import {RouteComponentProps} from 'react-router-dom';
+import 'url-search-params-polyfill';
+import {connect} from 'react-redux';
+import {IApplicationState} from './Store';
+import {getProducts} from './ProductsActions';
+import ProductsList from './ProductsList';
 
 interface IState {
   products: IProduct[];
@@ -25,17 +27,11 @@ class ProductsPage extends React.Component<IProps> {
 
   public render() {
     const searchParams = new URLSearchParams(this.props.location.search);
-    const search = searchParams.get("search") || "";
+    const search = searchParams.get('search') || '';
     return (
       <div className="page-container">
-        <p>
-          Welcome to React Shop where you can get all your tools for ReactJS!
-        </p>
-        <ProductsList
-          search={search}
-          products={this.props.products}
-          loading={this.props.loading}
-        />
+        <p>Welcome to React Shop where you can get all your tools for ReactJS!</p>
+        <ProductsList search={search} products={this.props.products} loading={this.props.loading} />
       </div>
     );
   }
@@ -44,17 +40,17 @@ class ProductsPage extends React.Component<IProps> {
 const mapStateToProps = (store: IApplicationState) => {
   return {
     loading: store.products.productsLoading,
-    products: store.products.products
+    products: store.products.products,
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    getProducts: () => dispatch(getProducts())
+    getProducts: () => dispatch(getProducts()),
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ProductsPage);

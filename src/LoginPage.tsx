@@ -1,4 +1,6 @@
-import * as React from "react";
+/** @format */
+
+import * as React from 'react';
 
 const LoginPage: React.SFC = () => {
   return (

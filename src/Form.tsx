@@ -1,30 +1,16 @@
-import * as React from "react";
+/** @format */
 
-export type Validator = (
-  fieldName: string,
-  values: IValues,
-  args?: any
-) => string;
+import * as React from 'react';
 
-export const required: Validator = (
-  fieldName: string,
-  values: IValues,
-  args?: any
-): string =>
-  values[fieldName] === undefined ||
-  values[fieldName] === null ||
-  values[fieldName] === ""
-    ? "This must be populated"
-    : "";
+export type Validator = (fieldName: string, values: IValues, args?: any) => string;
 
-export const minLength: Validator = (
-  fieldName: string,
-  values: IValues,
-  length: number
-): string =>
-  values[fieldName] && values[fieldName].length < length
-    ? `This must be at least ${length} characters`
-    : "";
+export const required: Validator = (fieldName: string, values: IValues, args?: any): string =>
+  values[fieldName] === undefined || values[fieldName] === null || values[fieldName] === ''
+    ? 'This must be populated'
+    : '';
+
+export const minLength: Validator = (fieldName: string, values: IValues, length: number): string =>
+  values[fieldName] && values[fieldName].length < length ? `This must be at least ${length} characters` : '';
 
 interface IValidation {
   validator: Validator;
@@ -42,7 +28,7 @@ export interface IValues {
 interface IFieldProps {
   name: string;
   label: string;
-  type?: "Text" | "Email" | "Select" | "TextArea";
+  type?: 'Text' | 'Email' | 'Select' | 'TextArea';
   options?: string[];
 }
 
@@ -77,19 +63,19 @@ interface IFormContext {
 
 const FormContext = React.createContext<IFormContext>({
   errors: {},
-  values: {}
+  values: {},
 });
 
 export class Form extends React.Component<IFormProps, IState> {
   public static Field: React.SFC<IFieldProps> = props => {
-    const { name, label, type, options } = props;
+    const {name, label, type, options} = props;
 
     const handleChange = (
       e:
         | React.ChangeEvent<HTMLInputElement>
         | React.ChangeEvent<HTMLTextAreaElement>
         | React.ChangeEvent<HTMLSelectElement>,
-      context: IFormContext
+      context: IFormContext,
     ) => {
       if (context.setValue) {
         context.setValue(props.name, e.currentTarget.value);
@@ -97,11 +83,11 @@ export class Form extends React.Component<IFormProps, IState> {
     };
 
     const handleBlur = (
-      e: 
-      | React.FocusEvent<HTMLInputElement>
-      | React.FocusEvent<HTMLTextAreaElement>
-      | React.FocusEvent<HTMLSelectElement>,
-      context: IFormContext
+      e:
+        | React.FocusEvent<HTMLInputElement>
+        | React.FocusEvent<HTMLTextAreaElement>
+        | React.FocusEvent<HTMLSelectElement>,
+      context: IFormContext,
     ) => {
       if (context.validate) {
         context.validate(props.name, e.currentTarget.value);
@@ -113,7 +99,7 @@ export class Form extends React.Component<IFormProps, IState> {
         {context => (
           <div className="form-group">
             <label htmlFor={name}>{label}</label>
-            {(type === "Text" || type === "Email") && (
+            {(type === 'Text' || type === 'Email') && (
               <input
                 type={type.toLowerCase()}
                 id={name}
@@ -122,7 +108,7 @@ export class Form extends React.Component<IFormProps, IState> {
                 onBlur={e => handleBlur(e, context)}
               />
             )}
-            {type === "TextArea" && (
+            {type === 'TextArea' && (
               <textarea
                 id={name}
                 value={context.values[name]}
@@ -130,12 +116,11 @@ export class Form extends React.Component<IFormProps, IState> {
                 onBlur={e => handleBlur(e, context)}
               />
             )}
-            {type === "Select" && (
+            {type === 'Select' && (
               <select
                 value={context.values[name]}
                 onChange={e => handleChange(e, context)}
-                onBlur={e => handleBlur(e, context)}
-              >
+                onBlur={e => handleBlur(e, context)}>
                 {options &&
                   options.map(option => (
                     <option key={option} value={option}>
@@ -145,12 +130,12 @@ export class Form extends React.Component<IFormProps, IState> {
               </select>
             )}
             {context.errors[name] &&
-            context.errors[name].length > 0 &&
-            context.errors[name].map(error => (
-              <span key={error} className="form-error">
-                {error}
-              </span>
-            ))}
+              context.errors[name].length > 0 &&
+              context.errors[name].map(error => (
+                <span key={error} className="form-error">
+                  {error}
+                </span>
+              ))}
           </div>
         )}
       </FormContext.Consumer>
@@ -167,7 +152,7 @@ export class Form extends React.Component<IFormProps, IState> {
       errors,
       submitted: false,
       submitting: false,
-      values: props.defaultValues
+      values: props.defaultValues,
     };
   }
 
@@ -176,14 +161,16 @@ export class Form extends React.Component<IFormProps, IState> {
       errors: this.state.errors,
       setValue: this.setValue,
       validate: this.validate,
-      values: this.state.values
+      values: this.state.values,
     };
     return (
       <FormContext.Provider value={context}>
         <form className="form" noValidate={true} onSubmit={this.handleSubmit}>
           {this.props.children}
           <div className="form-group">
-            <button type="submit" disabled={this.state.submitting || this.state.submitted}>submit</button>
+            <button type="submit" disabled={this.state.submitting || this.state.submitted}>
+              submit
+            </button>
           </div>
         </form>
       </FormContext.Provider>
@@ -191,8 +178,8 @@ export class Form extends React.Component<IFormProps, IState> {
   }
 
   private setValue = (fieldName: string, value: any) => {
-    const newValues = { ...this.state.values, [fieldName]: value };
-    this.setState({ values: newValues });
+    const newValues = {...this.state.values, [fieldName]: value};
+    this.setState({values: newValues});
   };
 
   private validate = (fieldName: string, value: any): string[] => {
@@ -200,53 +187,45 @@ export class Form extends React.Component<IFormProps, IState> {
     const errors: string[] = [];
     if (Array.isArray(rules)) {
       rules.forEach(rule => {
-        const error = rule.validator(
-          fieldName,
-          this.state.values,
-          rule.arg
-        );
-        if(error) {
+        const error = rule.validator(fieldName, this.state.values, rule.arg);
+        if (error) {
           errors.push(error);
         }
       });
     } else {
-
     }
-    const newErrors = { ...this.state.errors, [fieldName]: errors };
-    this.setState({ errors: newErrors });
+    const newErrors = {...this.state.errors, [fieldName]: errors};
+    this.setState({errors: newErrors});
     return errors;
   };
 
-  private handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => { 
+  private handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (this.validateForm()) {
-      this.setState({ submitting: true });
+      this.setState({submitting: true});
       const result = await this.props.onSubmit(this.state.values);
       this.setState({
         errors: result.errors || {},
         submitted: result.success,
-        submitting: false
-      })
+        submitting: false,
+      });
     }
-   }
+  };
 
   private validateForm(): boolean {
     const errors: IErrors = {};
-    let haveError: boolean = false;
+    let haveError = false;
     Object.keys(this.props.defaultValues).map(fieldName => {
-      errors[fieldName] = this.validate(
-        fieldName,
-        this.state.values[fieldName]
-      );
+      errors[fieldName] = this.validate(fieldName, this.state.values[fieldName]);
       if (errors[fieldName].length > 0) {
         haveError = true;
       }
     });
-    this.setState({ errors });
+    this.setState({errors});
     return !haveError;
   }
 }
 
 Form.Field.defaultProps = {
-  type: "Text"
-}
+  type: 'Text',
+};
