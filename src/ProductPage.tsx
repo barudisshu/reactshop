@@ -70,7 +70,4 @@ const mapStateToProps = (store: IApplicationState) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ProductPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductPage);

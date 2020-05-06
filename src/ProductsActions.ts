@@ -15,9 +15,12 @@ const loading: ActionCreator<IProductsLoadingAction> = () => ({
   type: ProductsActionTypes.LOADING,
 });
 
-export const getProducts: ActionCreator<
-  ThunkAction<Promise<AnyAction>, IProductsState, null, IProductsGetAllAction>
-> = () => {
+export const getProducts: ActionCreator<ThunkAction<
+  Promise<AnyAction>,
+  IProductsState,
+  null,
+  IProductsGetAllAction
+>> = () => {
   return async (dispatch: Dispatch) => {
     dispatch(loading());
     const products = await getProductsFromAPI();
