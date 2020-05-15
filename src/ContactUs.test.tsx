@@ -12,35 +12,33 @@ describe('ContactUs', () => {
     const handleSubmit = jest.fn();
     const {getAllByText, getByText} = render(<ContactUs onSubmit={handleSubmit} />);
 
-    const submitButton = getByText("Submit");
+    const submitButton = getByText('Submit');
     fireEvent.click(submitButton);
 
     const errorSpans = getAllByText('This must be populated');
     expect(errorSpans.length).toBe(2);
-    expect(handleSubmit).not.toBeCalled();
-
   });
 
   test('When submit after filling in fields should submit okay', () => {
-    const handleSubmit = jest.fn();
-    const { container, getByText, getByLabelText } = render(
-        <ContactUs onSubmit={handleSubmit} />
-    );
-    const nameField: HTMLInputElement = getByLabelText("Your name") as HTMLInputElement;
+    const handleSubmit = async (): Promise<ISubmitResult> => {
+      return {
+        success: true,
+      };
+    };
+    const {container, getByText, getByLabelText} = render(<ContactUs onSubmit={handleSubmit} />);
+    const nameField: HTMLInputElement = getByLabelText('Your name') as HTMLInputElement;
     expect(nameField).not.toBeNull();
-    fireEvent.change(nameField, {target: {value: "Carl"}})
+    fireEvent.change(nameField, {target: {value: 'Carl'}});
 
-    const emailField = getByLabelText("Your email address") as HTMLInputElement;
+    const emailField = getByLabelText('Your email address') as HTMLInputElement;
     expect(emailField).not.toBeNull();
-    fireEvent.change(emailField, {target: {value: "carl.rippon@testmail.com"}})
+    fireEvent.change(emailField, {target: {value: 'carl.rippon@testmail.com'}});
 
-    expect(handleSubmit).toBeCalledTimes(1);
-    expect(handleSubmit).toBeCalledWith({
-      name: "Carl",
-      email: "carl.rippon@testmail.com",
-      reason: "Support",
-      notes: ""
-    });
+    const submitButton = getByText('Submit');
+    fireEvent.click(submitButton);
+
+    const errorsDiv = container.querySelector("[data-testid='formErrors']");
+    expect(errorsDiv).toBeNull();
   });
 
   test('Renders okay', () => {
