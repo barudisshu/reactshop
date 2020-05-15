@@ -17,14 +17,12 @@ describe('ContactUs', () => {
 
     const errorSpans = getAllByText('This must be populated');
     expect(errorSpans.length).toBe(2);
+
+    expect(handleSubmit).not.toBeCalled();
   });
 
   test('When submit after filling in fields should submit okay', () => {
-    const handleSubmit = async (): Promise<ISubmitResult> => {
-      return {
-        success: true,
-      };
-    };
+    const handleSubmit = jest.fn();
     const {container, getByText, getByLabelText} = render(<ContactUs onSubmit={handleSubmit} />);
     const nameField: HTMLInputElement = getByLabelText('Your name') as HTMLInputElement;
     expect(nameField).not.toBeNull();
@@ -39,6 +37,14 @@ describe('ContactUs', () => {
 
     const errorsDiv = container.querySelector("[data-testid='formErrors']");
     expect(errorsDiv).toBeNull();
+
+    expect(handleSubmit).toBeCalledTimes(1);
+    expect(handleSubmit).toBeCalledWith({
+      name: "Carl",
+      email: "carl.rippon@testmail.com",
+      reason: "Support",
+      notes: ""
+    });
   });
 
   test('Renders okay', () => {
